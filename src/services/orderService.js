@@ -8,5 +8,5 @@ import { sendEvent } from './webhook.js'
  * @returns {Promise<import('../models/types').WebhookEvent>}
  */
 export async function submitOrder(payload) {
-  return sendEvent('order.created', payload) // { name, productId, productName, phone }
+  return sendEvent('order.created', payload) // { name, productId, productName, phone, email, quantity }
 }

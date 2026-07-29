@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { QRCodeSVG } from 'qrcode.react'
 import { filterCategories } from '../data/categories.js'
 import { getProducts } from '../services/productService.js'
 import ProductCard from './ProductCard.jsx'
@@ -51,6 +52,13 @@ export default function ProductList() {
         ) : (
           <div className="grid">
             {visible.map(p => <ProductCard key={p.id} product={p} />)}
+          </div>
+        )}
+
+        {!loading && (
+          <div className="catalog-share">
+            <p className="catalog-share__label">Kataloğu paylaş</p>
+            <QRCodeSVG value={window.location.origin} size={96} />
           </div>
         )}
       </div>

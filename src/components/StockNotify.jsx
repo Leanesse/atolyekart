@@ -23,6 +23,8 @@ export default function StockNotify() {
     return () => { alive = false }
   }, [])
 
+  const selectedProduct = products.find(p => p.id === form.productId)
+
   function update(field, value) {
     setForm(f => ({ ...f, [field]: value }))
   }
@@ -35,6 +37,7 @@ export default function StockNotify() {
         name: form.name,
         email: form.email,
         productId: form.productId,
+        productName: selectedProduct?.name,
       })
       setDone(true)
       setForm(emptyForm)
