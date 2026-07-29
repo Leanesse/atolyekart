@@ -91,14 +91,17 @@
  * @property {string} productId    - Seçilen ürün kimliği
  * @property {string} [productName]- Okunabilirlik için ürün adı
  * @property {string} phone        - Telefon
+ * @property {string} email        - E-posta
+ * @property {number} quantity     - Adet (en az 1)
  */
 
 /**
  * Stok bildirimi talebi (webhook 'stock.notify_requested' → data).
  * @typedef {Object} StockNotifyRequest
- * @property {string} name      - Ad soyad
- * @property {string} email     - E-posta
- * @property {string} productId - İlgilenilen ürün kimliği
+ * @property {string} name         - Ad soyad
+ * @property {string} email        - E-posta
+ * @property {string} productId    - İlgilenilen ürün kimliği
+ * @property {string} [productName]- Okunabilirlik için ürün adı
  */
 
 /**

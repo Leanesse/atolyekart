@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { getProducts } from '../services/productService.js'
 import { submitOrder } from '../services/orderService.js'
 
-const emptyForm = { name: '', productId: '', phone: '' }
+const emptyForm = { name: '', productId: '', phone: '', email: '', quantity: 1 }
 
 // Sipariş bölümü — form → onay ekranı → başarı (3 adımlı akış).
 export default function OrderForm() {
@@ -40,6 +40,8 @@ export default function OrderForm() {
         productId: form.productId,
         productName: selectedProduct?.name,
         phone: form.phone,
+        email: form.email,
+        quantity: Number(form.quantity) || 1,
       })
       setOrderNo(result.id)
       setStep('done')
@@ -85,9 +87,21 @@ export default function OrderForm() {
                 </select>
               </div>
               <div className="field">
-                <label>Telefon</label>
-                <input type="tel" required placeholder="+90 5xx xxx xx xx"
-                  value={form.phone} onChange={e => update('phone', e.target.value)} />
+                <label>E-posta</label>
+                <input type="email" required placeholder="ornek@mail.com"
+                  value={form.email} onChange={e => update('email', e.target.value)} />
+              </div>
+              <div className="field-row">
+                <div className="field">
+                  <label>Telefon</label>
+                  <input type="tel" required placeholder="+90 5xx xxx xx xx"
+                    value={form.phone} onChange={e => update('phone', e.target.value)} />
+                </div>
+                <div className="field">
+                  <label>Adet</label>
+                  <input type="number" required min="1"
+                    value={form.quantity} onChange={e => update('quantity', e.target.value)} />
+                </div>
               </div>
               <button type="submit" className="btn btn-primary">Devam</button>
             </>
@@ -100,6 +114,8 @@ export default function OrderForm() {
                 <div><dt>Ad Soyad</dt><dd>{form.name}</dd></div>
                 <div><dt>Ürün</dt><dd>{selectedProduct?.name}</dd></div>
                 <div><dt>Telefon</dt><dd>{form.phone}</dd></div>
+                <div><dt>E-posta</dt><dd>{form.email}</dd></div>
+                <div><dt>Adet</dt><dd>{form.quantity}</dd></div>
               </dl>
               <div className="btns">
                 <button type="button" className="btn btn-ghost"
