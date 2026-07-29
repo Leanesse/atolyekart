@@ -160,6 +160,7 @@ section{padding:84px 0}
 .field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--accent);background:#fff}
 .field select:disabled{opacity:.55;cursor:not-allowed}
 .field-row{display:grid;grid-template-columns:1fr 1fr .7fr;gap:12px}
+.field-row-2{grid-template-columns:1fr .55fr}
 .field-row .field{margin-bottom:16px}
 @media(max-width:480px){.field-row{grid-template-columns:1fr}}
 .contact-form .btn-primary{width:100%;margin-top:6px}

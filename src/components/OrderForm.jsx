@@ -91,7 +91,7 @@ export default function OrderForm() {
                 <input type="email" required placeholder="ornek@mail.com"
                   value={form.email} onChange={e => update('email', e.target.value)} />
               </div>
-              <div className="field-row">
+              <div className="field-row field-row-2">
                 <div className="field">
                   <label>Telefon</label>
                   <input type="tel" required placeholder="+90 5xx xxx xx xx"
