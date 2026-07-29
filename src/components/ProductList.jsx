@@ -55,10 +55,12 @@ export default function ProductList() {
           </div>
         )}
 
-        <div className="catalog-share">
-          <p className="catalog-share__label">Kataloğu paylaş</p>
-          <QRCodeSVG value={window.location.origin} size={96} />
-        </div>
+        {!loading && (
+          <div className="catalog-share">
+            <p className="catalog-share__label">Kataloğu paylaş</p>
+            <QRCodeSVG value={window.location.origin} size={96} />
+          </div>
+        )}
       </div>
     </section>
   )
