@@ -10,7 +10,7 @@
 
 - [x] **GitHub repo linki** — https://github.com/Leanesse/atolyekart (public)
 - [x] **Çalışan React sayfası** — `npm install && npm run dev` → http://localhost:5173/
-      (ekran görüntüsü: `docs/ekran-goruntusu.png` — eklenecek)
+      (ekran görüntüsü: `docs/ekran-goruntusu.png`)
 - [x] **webhook.site'ta iki ayrı event kanıtı** — bkz. `webhook-kanit.md`
 - [x] **Kısa düşünce yanıtları** — bkz. `KISA-DUSUNCE.md`
 
