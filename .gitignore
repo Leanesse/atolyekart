@@ -3,6 +3,7 @@ dist
 dist-ssr
 *.local
 .DS_Store
+.env
 .claude
 KONUSMA-OZETI.md
 skill-olusturma-konusmasi.md

@@ -75,6 +75,33 @@
  */
 
 /**
+ * Standart webhook zarfı — tüm dış gönderimler bu şekli kullanır.
+ * @typedef {Object} WebhookEvent
+ * @property {string} event      - 'konu.eylem' (ör. 'order.created')
+ * @property {'fpvstore'} source
+ * @property {string} id         - 'evt-<timestamp>'
+ * @property {string} createdAt  - ISO tarih
+ * @property {Object} data       - Olaya özel alanlar
+ */
+
+/**
+ * Sipariş talebi (webhook 'order.created' → data).
+ * @typedef {Object} Order
+ * @property {string} name         - Ad soyad
+ * @property {string} productId    - Seçilen ürün kimliği
+ * @property {string} [productName]- Okunabilirlik için ürün adı
+ * @property {string} phone        - Telefon
+ */
+
+/**
+ * Stok bildirimi talebi (webhook 'stock.notify_requested' → data).
+ * @typedef {Object} StockNotifyRequest
+ * @property {string} name      - Ad soyad
+ * @property {string} email     - E-posta
+ * @property {string} productId - İlgilenilen ürün kimliği
+ */
+
+/**
  * @typedef {Object} CustomPrintRequest
  * @property {string} id
  * @property {string} name

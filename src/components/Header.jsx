@@ -9,6 +9,8 @@ export default function Header() {
         <div className="logo"><span className="dot"></span>fpvstore</div>
         <nav className={`nav-links${open ? ' open' : ''}`} onClick={() => setOpen(false)}>
           <a href="#urunler">Ürünler</a>
+          <a href="#siparis">Sipariş</a>
+          <a href="#stok-bildirimi">Stok Bildirimi</a>
           <a href="#hakkimizda">Hakkımızda</a>
           <a href="#iletisim">İletişim</a>
         </nav>

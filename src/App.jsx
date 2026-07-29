@@ -1,6 +1,8 @@
 import Header from './components/Header.jsx'
 import Hero from './components/Hero.jsx'
 import ProductList from './components/ProductList.jsx'
+import OrderForm from './components/OrderForm.jsx'
+import StockNotify from './components/StockNotify.jsx'
 import About from './components/About.jsx'
 import Contact from './components/Contact.jsx'
 import Footer from './components/Footer.jsx'
@@ -12,6 +14,8 @@ export default function App() {
       <main>
         <Hero />
         <ProductList />
+        <OrderForm />
+        <StockNotify />
         <About />
         <Contact />
       </main>
