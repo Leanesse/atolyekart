@@ -1,6 +1,6 @@
 // Canlı Vercel URL'si. Expo Go telefonda çalışırken localhost'a erişemez;
 // bu yüzden deploy edilmiş üretim URL'si kullanılır.
-const API_BASE = 'https://<CANLI-VERCEL-URL>'
+const API_BASE = 'https://atolyekart-omega.vercel.app'
 
 export async function fetchProducts() {
   const res = await fetch(`${API_BASE}/api/products`)
