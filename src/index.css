@@ -212,3 +212,8 @@ footer .muted{color:var(--muted);font-size:.86rem}
   .nav-links a{padding:12px 0;border-bottom:1px solid var(--border)}
   .menu-btn{display:block}
 }
+
+/* ---------- FORM VALIDATION ---------- */
+.field-error { color: #b23; font-size: .82rem; margin-top: 4px; }
+.consent { display: flex; gap: 8px; align-items: flex-start; font-size: .85rem; color: #444; }
+.consent input { margin-top: 3px; }
