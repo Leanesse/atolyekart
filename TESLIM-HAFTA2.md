@@ -10,12 +10,12 @@
 
 - [x] **Canlı Vercel URL'si** — https://atolyekart-omega.vercel.app (public, protection kapalı)
 - [x] **`.env` commit edilmedi kanıtı** — `git ls-files | grep -c '^\.env$'` → `0`; repoda yalnızca `.env.example`
-- [ ] **Vercel Environment Variables ekran görüntüsü** — `docs/vercel-env.png` (panel → Settings → Environment Variables)
+- [x] **Vercel Environment Variables ekran görüntüsü** — `docs/vercel-env.png` (panel → Settings → Environment Variables)
 - [x] **Validasyon + rate limit test notu** — `docs/test-notlari.md` (canlı curl kanıtları: 400/201/429, JWT 401↔200, webhook.site teslimatı)
-- [ ] **Expo Go / mobil ekran görüntüsü** — `docs/mobil-ekran.png`
-- [ ] **Kısa düşünce yanıtları** — `KISA-DUSUNCE.md` (Hafta 2 soruları)
+- [x] **Expo Go / mobil ekran görüntüleri** — `docs/mobil-1-siparis-formu.jpg` (onay öncesi), `docs/mobil-2-kvkk-onay.jpg` (KVKK okundu → onay), `docs/mobil-3-stok-bildirimi.jpg`
+- [ ] **Kısa düşünce yanıtları** — `KISA-DUSUNCE.md` (Hafta 2 soruları — öğrenci manuel dolduracak)
 
-> `[ ]` kalanlar ekran görüntüsü / manuel adım gerektiriyor (aşağıda).
+> Tek kalan: Hafta 2 "Kısa düşünce" yanıtları (aşağıdaki 2 soru).
 
 ---
 
@@ -56,7 +56,7 @@ npm run dev:api     # yerel full-stack (vercel dev — /api dahil)
 cd mobile && npx expo start   # Expo Go ile telefondan tara
 ```
 
-## Kalan manuel adımlar (öğrenci)
-1. Vercel panelinde Environment Variables ekranının görüntüsü → `docs/vercel-env.png`.
-2. `cd mobile && npx expo start` → Expo Go ile tara → iki formu dene → `docs/mobil-ekran.png`.
-3. `KISA-DUSUNCE.md`'yi Hafta 2 iki sorusuyla doldur.
+## Kalan tek adım (öğrenci)
+`KISA-DUSUNCE.md`'yi Hafta 2 iki sorusuyla doldur:
+1. Worktree egzersizinde hata + özelliği paralel yürütmek kolay mı zor mu oldu?
+2. Mobil portta web'den farklı en çok neyi değiştirmen gerekti?
