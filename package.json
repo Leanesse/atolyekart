@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "description": "fpvstore — 3D baskı drone parçaları vitrin sitesi (React + Vite)",
+  "engines": { "node": "22.x" },
   "scripts": {
     "dev": "vite",
     "dev:api": "vercel dev",
