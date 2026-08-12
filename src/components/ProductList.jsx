@@ -7,6 +7,7 @@ import ProductCard from './ProductCard.jsx'
 // Katalog bölümü — servisten veri çeker, filtreler ve grid'i çizer.
 export default function ProductList() {
   const [activeCat, setActiveCat] = useState('all')
+  const [inStockOnly, setInStockOnly] = useState(false)
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -22,9 +23,8 @@ export default function ProductList() {
     return () => { alive = false }
   }, [])
 
-  const visible = activeCat === 'all'
-    ? items
-    : items.filter(p => p.categoryId === activeCat)
+  const byCat = activeCat === 'all' ? items : items.filter(p => p.categoryId === activeCat)
+  const visible = inStockOnly ? byCat.filter(p => p.inStock) : byCat
 
   return (
     <section id="urunler">
@@ -46,6 +46,12 @@ export default function ProductList() {
             </button>
           ))}
         </div>
+
+        <label className="stock-toggle">
+          <input type="checkbox" checked={inStockOnly}
+            onChange={e => setInStockOnly(e.target.checked)} />
+          Sadece stokta olanlar
+        </label>
 
         {loading ? (
           <p className="loading">Ürünler yükleniyor…</p>
