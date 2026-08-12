@@ -9,7 +9,7 @@
 - [x] HTTPS: Vercel varsayılan
 - [x] Loglara secret yazılmıyor (yalnızca event adı/hata)
 - [x] KVKK: açık rıza checkbox'ı + Gizlilik Politikası
-- [ ] `npm audit` çalıştırıldı, kritik açık yok
+- [ ] `npm audit`: temiz değil — `vercel` CLI (devDependency) geçişli bağımlılıklarında 2 kritik + 19 yüksek açık (ör. `tar`). Bunlar dağıtılan runtime bundle'ında değil; deploy öncesi `vercel` CLI sürümü güncellenmeli.
 - [ ] Vercel Environment Variables production/preview için dolduruldu
 
-> Not: Rate limit ve order store in-memory (per-instance). Prod ölçek için Vercel KV / Upstash önerilir.
+> Not: Rate limit ve order store in-memory (per-instance). Prod ölçek için Vercel KV / Upstash önerilir. `npm audit` açıkları lokal `vercel` CLI deploy aracında; runtime bundle'da değil.
