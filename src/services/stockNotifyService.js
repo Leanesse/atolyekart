@@ -1,12 +1,16 @@
-import { sendEvent } from './webhook.js'
-
 /**
- * Stok bildirimi talebini webhook'a gönderir ('stock.notify_requested').
- * Ürün stoğa girince haber vermek için ziyaretçi bilgisi toplanır.
+ * Stok bildirimini kendi backend'imize (/api/stock-notify) POST eder.
  *
  * @param {import('../models/types').StockNotifyRequest} payload
- * @returns {Promise<import('../models/types').WebhookEvent>}
+ * @returns {Promise<{ok: boolean}>}
  */
 export async function submitStockNotify(payload) {
-  return sendEvent('stock.notify_requested', payload) // { name, productId, productName, email }
+  const res = await fetch('/api/stock-notify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+  const body = await res.json().catch(() => ({}))
+  if (!res.ok) throw new Error(body.error || 'Bildirim gönderilemedi.')
+  return body // { ok }
 }
