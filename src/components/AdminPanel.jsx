@@ -24,6 +24,7 @@ export default function AdminPanel() {
     const res = await fetch('/api/admin/orders', { headers: { Authorization: `Bearer ${tk}` } })
     const body = await res.json().catch(() => ({}))
     if (res.ok) setOrders(body.orders || [])
+    else setError(body.error || 'Siparişler yüklenemedi.')
   }
 
   return (
@@ -34,8 +35,8 @@ export default function AdminPanel() {
         {!token ? (
           <form className="contact-form" onSubmit={login}>
             <div className="field">
-              <label>Parola</label>
-              <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
+              <label htmlFor="admin-password">Parola</label>
+              <input id="admin-password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
             </div>
             {error && <p className="field-error">{error}</p>}
             <button className="btn btn-primary" type="submit">Giriş</button>

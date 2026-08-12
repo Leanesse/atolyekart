@@ -6,5 +6,12 @@ export default function handler(req, res) {
   if (!process.env.ADMIN_PASSWORD || password !== process.env.ADMIN_PASSWORD) {
     return res.status(401).json({ error: 'Parola hatalı.' })
   }
-  return res.status(200).json({ token: signAdminToken() })
+  let token
+  try {
+    token = signAdminToken()
+  } catch (err) {
+    console.error('[api/admin/login] JWT imzalama hatası:', err)
+    return res.status(500).json({ error: 'Sunucu yapılandırma hatası.' })
+  }
+  return res.status(200).json({ token })
 }

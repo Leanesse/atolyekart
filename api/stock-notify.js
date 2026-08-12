@@ -1,10 +1,7 @@
 import { validateStockNotify } from './_lib/validate.js'
 import { checkRateLimit } from './_lib/rateLimit.js'
 import { sendToWebhook } from './_lib/webhook.js'
-
-function clientIp(req) {
-  return (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown'
-}
+import { clientIp } from './_lib/clientIp.js'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' })

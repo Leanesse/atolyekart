@@ -2,10 +2,7 @@ import { validateOrder } from './_lib/validate.js'
 import { checkRateLimit } from './_lib/rateLimit.js'
 import { sendToWebhook } from './_lib/webhook.js'
 import { addOrder } from './_lib/orderStore.js'
-
-function clientIp(req) {
-  return (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown'
-}
+import { clientIp } from './_lib/clientIp.js'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' })
@@ -19,11 +16,18 @@ export default async function handler(req, res) {
     await sendToWebhook('order.created', {
       name: data.name, productId: data.productId, productName: data.productName,
       phone: data.phone, email: data.email, quantity: data.quantity,
+      consent: data.consent,
     })
-    const saved = addOrder(data)
-    return res.status(201).json({ ok: true, id: saved.id })
   } catch (err) {
-    console.error('[api/order]', err)
+    console.error('[api/order] webhook hatası:', err)
     return res.status(502).json({ error: 'Webhook iletilemedi.' })
   }
+
+  let saved
+  try {
+    saved = addOrder(data)
+  } catch (err) {
+    console.error('[api/order] orderStore hatası:', err)
+  }
+  return res.status(201).json({ ok: true, id: saved?.id })
 }

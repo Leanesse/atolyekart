@@ -16,6 +16,9 @@ export async function sendToWebhook(event, data) {
     console.warn('[webhook] WEBHOOK_URL tanımsız, gönderim atlandı:', payload.event)
     return { status: 0, payload }
   }
+  if (!process.env.WEBHOOK_SECRET) {
+    console.warn('[webhook] WEBHOOK_SECRET tanımsız — imzasız gönderiliyor')
+  }
   const res = await fetch(url, {
     method: 'POST',
     headers: {
