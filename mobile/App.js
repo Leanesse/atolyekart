@@ -46,6 +46,8 @@ export default function App() {
   const [stock, setStock] = useState(emptyStock)
   const [kvkkOpen, setKvkkOpen] = useState(false)
   const [kvkkRead, setKvkkRead] = useState(false)
+  const [orderSubmitting, setOrderSubmitting] = useState(false)
+  const [stockSubmitting, setStockSubmitting] = useState(false)
 
   useEffect(() => {
     fetchProducts()
@@ -60,8 +62,10 @@ export default function App() {
   }
 
   async function submitOrder() {
+    if (orderSubmitting) return // çift gönderim koruması
     if (!order.productId) return Alert.alert('Eksik', 'Lütfen bir ürün seçin.')
     if (!order.consent) return Alert.alert('KVKK', 'Devam için önce KVKK metnini okuyup onay verin.')
+    setOrderSubmitting(true)
     try {
       const p = products.find(x => x.id === order.productId)
       await postOrder({
@@ -73,11 +77,15 @@ export default function App() {
       setOrder(emptyOrder); setKvkkRead(false)
     } catch (e) {
       Alert.alert('Hata', e.message)
+    } finally {
+      setOrderSubmitting(false)
     }
   }
 
   async function submitStock() {
+    if (stockSubmitting) return // çift gönderim koruması
     if (!stock.productId) return Alert.alert('Eksik', 'Lütfen bir ürün seçin.')
+    setStockSubmitting(true)
     try {
       const p = products.find(x => x.id === stock.productId)
       await postStockNotify({
@@ -88,6 +96,8 @@ export default function App() {
       setStock(emptyStock)
     } catch (e) {
       Alert.alert('Hata', e.message)
+    } finally {
+      setStockSubmitting(false)
     }
   }
 
@@ -196,9 +206,9 @@ export default function App() {
             </TouchableOpacity>
           )}
 
-          <TouchableOpacity style={[styles.btn, !order.consent && styles.btnDisabled]}
-            onPress={submitOrder} disabled={!order.consent}>
-            <Text style={styles.btnText}>Sipariş Ver</Text>
+          <TouchableOpacity style={[styles.btn, (!order.consent || orderSubmitting) && styles.btnDisabled]}
+            onPress={submitOrder} disabled={!order.consent || orderSubmitting}>
+            <Text style={styles.btnText}>{orderSubmitting ? 'Gönderiliyor…' : 'Sipariş Ver'}</Text>
           </TouchableOpacity>
         </View>
 
@@ -219,8 +229,9 @@ export default function App() {
           <Text style={styles.label}>Ürün</Text>
           <ProductPicker value={stock.productId} onSelect={id => setStock({ ...stock, productId: id })} />
 
-          <TouchableOpacity style={styles.btn} onPress={submitStock}>
-            <Text style={styles.btnText}>Bildir</Text>
+          <TouchableOpacity style={[styles.btn, stockSubmitting && styles.btnDisabled]}
+            onPress={submitStock} disabled={stockSubmitting}>
+            <Text style={styles.btnText}>{stockSubmitting ? 'Gönderiliyor…' : 'Bildir'}</Text>
           </TouchableOpacity>
         </View>
 
