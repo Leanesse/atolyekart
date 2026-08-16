@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { getProducts } from '../services/productService.js'
 import { submitOrder } from '../services/orderService.js'
+import { validateOrderForm } from '../utils/validation.js'
 
-const emptyForm = { name: '', productId: '', phone: '', email: '', quantity: 1 }
+const emptyForm = { name: '', productId: '', phone: '', email: '', quantity: 1, consent: false }
 
 // Sipariş bölümü — form → onay ekranı → başarı (3 adımlı akış).
 export default function OrderForm() {
@@ -11,6 +12,7 @@ export default function OrderForm() {
   const [step, setStep] = useState('form') // 'form' | 'confirm' | 'done'
   const [sending, setSending] = useState(false)
   const [orderNo, setOrderNo] = useState('')
+  const [errors, setErrors] = useState({})
 
   // Ürünleri servisten yükle (ileride webhook/API olsa da burası değişmez).
   useEffect(() => {
@@ -25,10 +27,12 @@ export default function OrderForm() {
     setForm(f => ({ ...f, [field]: value }))
   }
 
-  // Form → onay ekranına geç (basit doğrulama tarayıcı required ile yapılır).
+  // Form → onay ekranına geç (client validasyon + consent kontrolü).
   function handleReview(e) {
     e.preventDefault()
-    setStep('confirm')
+    const { valid, errors } = validateOrderForm(form)
+    setErrors(errors)
+    if (valid) setStep('confirm')
   }
 
   // Onay ekranından siparişi gönder.
@@ -36,18 +40,14 @@ export default function OrderForm() {
     setSending(true)
     try {
       const result = await submitOrder({
-        name: form.name,
-        productId: form.productId,
-        productName: selectedProduct?.name,
-        phone: form.phone,
-        email: form.email,
-        quantity: Number(form.quantity) || 1,
+        name: form.name, productId: form.productId, productName: selectedProduct?.name,
+        phone: form.phone, email: form.email, quantity: Number(form.quantity) || 1, consent: form.consent,
       })
       setOrderNo(result.id)
       setStep('done')
       setForm(emptyForm)
     } catch (err) {
-      alert('Sipariş gönderilemedi, lütfen tekrar deneyin.')
+      alert(err.message || 'Sipariş gönderilemedi, lütfen tekrar deneyin.')
       console.error('[OrderForm] submit hatası:', err)
     } finally {
       setSending(false)
@@ -90,6 +90,7 @@ export default function OrderForm() {
                 <label>E-posta</label>
                 <input type="email" required placeholder="ornek@mail.com"
                   value={form.email} onChange={e => update('email', e.target.value)} />
+                {errors.email && <p className="field-error">{errors.email}</p>}
               </div>
               <div className="field-row field-row-2">
                 <div className="field">
@@ -102,6 +103,17 @@ export default function OrderForm() {
                   <input type="number" required min="1"
                     value={form.quantity} onChange={e => update('quantity', e.target.value)} />
                 </div>
+              </div>
+              <div className="field field-consent">
+                <label className="consent">
+                  <input type="checkbox" checked={form.consent}
+                    onChange={e => update('consent', e.target.checked)} />
+                  <span>
+                    Ad, telefon ve e-posta bilgilerimin siparişimle ilgili iletişim amacıyla
+                    işlenmesine açık rıza veriyorum. (<a href="#gizlilik">Gizlilik Politikası</a>)
+                  </span>
+                </label>
+                {errors.consent && <p className="field-error">{errors.consent}</p>}
               </div>
               <button type="submit" className="btn btn-primary">Devam</button>
             </>

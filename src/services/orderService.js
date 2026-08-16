@@ -1,12 +1,20 @@
-import { sendEvent } from './webhook.js'
-
 /**
- * Sipariş talebini webhook'a gönderir ('order.created').
- * Bileşen yalnızca bunu çağırır; gönderim/zarf detayı burada.
+ * Sipariş talebini kendi backend'imize (/api/order) POST eder.
  *
  * @param {import('../models/types').Order} payload
- * @returns {Promise<import('../models/types').WebhookEvent>}
+ * @returns {Promise<{ok: boolean, id: string}>}
  */
 export async function submitOrder(payload) {
-  return sendEvent('order.created', payload) // { name, productId, productName, phone, email, quantity }
+  const res = await fetch('/api/order', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+  const body = await res.json().catch(() => ({}))
+  if (!res.ok) {
+    const err = new Error(body.error || 'Sipariş gönderilemedi.')
+    err.fieldErrors = body.errors
+    throw err
+  }
+  return body // { ok, id }
 }

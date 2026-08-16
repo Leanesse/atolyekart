@@ -16,6 +16,7 @@ export default function Footer() {
         </div>
         <div className="logo"><span className="dot"></span>fpvstore</div>
         <p className="muted">© 2026 fpvstore · 3D baskı drone parçaları · Tüm hakları saklıdır.</p>
+        <p className="muted"><a href="#gizlilik">Gizlilik Politikası</a></p>
       </div>
     </footer>
   )
