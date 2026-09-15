@@ -6,7 +6,7 @@ export default function Header() {
   return (
     <header>
       <div className="container nav">
-        <div className="logo"><span className="dot"></span>fpvstore</div>
+        <a className="logo" href="#"><span className="dot"></span>fpvstore</a>
         <nav className={`nav-links${open ? ' open' : ''}`} onClick={() => setOpen(false)}>
           <a href="#urunler">Ürünler</a>
           <a href="#siparis">Sipariş</a>

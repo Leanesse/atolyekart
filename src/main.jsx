@@ -42,6 +42,16 @@ const mountChat = () => {
       },
     },
   })
+
+  // @n8n/chat 1.38 window modunda X düğmesinin "close" olayını dinleyeni yok;
+  // X'e basılınca widget'ın kendi launcher'ını tetikleyerek paneli kapat.
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest?.('.chat-close-button')) return
+    e.stopPropagation()
+    e.preventDefault()
+    const toggle = document.querySelector('.chat-window-toggle')
+    if (toggle) toggle.click()
+  }, true)
 }
 
 if (document.readyState === 'loading') {
