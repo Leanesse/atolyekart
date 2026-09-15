@@ -10,7 +10,7 @@ export default function Hero() {
     <section className="hero">
       <div className="container">
         <span className="badge">3D Baskı · FPV &amp; Drone Parçaları</span>
-        <h1>Uçuşun için hafif ve dayanıklı parçalar</h1>
+        <h1>Uçuşun için <span className="hl">hafif ve dayanıklı</span> parçalar</h1>
         <p>Kendi atölyemizde, yüksek kaliteli filamentlerle üretiyoruz. Frame'lerden kamera mountlarına, ihtiyacın olan her şey tek yerde.</p>
         <div className="btns">
           <a href="#urunler" className="btn btn-primary">Ürünleri Keşfet</a>
