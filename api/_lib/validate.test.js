@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { validateOrder, validateStockNotify } from './validate.js'
+import { validateOrder, validateStockNotify, validateCustomPrint } from './validate.js'
 
 const order = { name: 'Ali', productId: 'p1', productName: 'X', phone: '5551112233', email: 'ali@site.com', quantity: 2, consent: true }
 
@@ -27,5 +27,17 @@ describe('validateStockNotify', () => {
   })
   it('geçersiz e-postayı reddeder', () => {
     expect(validateStockNotify({ name: 'Ali', email: 'foo@bar', productId: 'p1' }).valid).toBe(false)
+  })
+})
+
+describe('validateCustomPrint', () => {
+  it('geçerli talebi onaylar', () => {
+    expect(validateCustomPrint({ name: 'Ali', email: 'ali@site.com', quantity: 2, notes: 'STL hazır' }).valid).toBe(true)
+  })
+  it('not alanı boşsa reddeder', () => {
+    expect(validateCustomPrint({ name: 'Ali', email: 'ali@site.com', quantity: 1, notes: '' }).valid).toBe(false)
+  })
+  it('geçersiz e-postayı reddeder', () => {
+    expect(validateCustomPrint({ name: 'Ali', email: 'foo@bar', quantity: 1, notes: 'x' }).valid).toBe(false)
   })
 })

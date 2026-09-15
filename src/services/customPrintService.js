@@ -1,33 +1,16 @@
-import { customPrintRequests } from '../data/customPrintRequests.js'
-
-const delay = (ms = 120) => new Promise(r => setTimeout(r, ms))
-
-/**
- * Özel baskı talebini kaydeder.
- * ŞİMDİLİK: yeni bir CustomPrintRequest oluşturup bellekteki listeye ekler.
- * İLERİDE: bu fonksiyonun gövdesi webhook/backend'e `fetch(POST)` ile değişecek;
- *          çağıran bileşen (form) hiç değişmeyecek.
- *
- * @param {Omit<import('../models/types').CustomPrintRequest, 'id'|'status'|'createdAt'>} payload
- * @returns {Promise<import('../models/types').CustomPrintRequest>}
- */
+// Özel baskı talebini kendi backend'imize (/api/custom-print) POST eder.
+// Oradan n8n "H4 — Teklif Al" akışına gider: tabloya kayıt + müşteriye onay maili.
 export async function submitRequest(payload) {
-  await delay()
-
-  /** @type {import('../models/types').CustomPrintRequest} */
-  const request = {
-    id: `req-${Date.now()}`,
-    status: 'new',
-    createdAt: new Date().toISOString(),
-    quantity: 1,
-    ...payload,
+  const res = await fetch('/api/custom-print', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+  const body = await res.json().catch(() => ({}))
+  if (!res.ok) {
+    const err = new Error(body.error || 'Talep gönderilemedi.')
+    err.fieldErrors = body.errors
+    throw err
   }
-
-  customPrintRequests.push(request)
-
-  // İleride webhook entegrasyonu buraya:
-  // await fetch(WEBHOOK_URL, { method: 'POST', body: JSON.stringify(request) })
-  console.log('[customPrintService] Yeni talep oluşturuldu:', request)
-
-  return request
+  return body // { ok: true }
 }

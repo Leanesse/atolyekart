@@ -31,17 +31,23 @@ export default function Contact() {
   async function handleSubmit(e) {
     e.preventDefault()
     setSending(true)
-    const request = await submitRequest({
-      name: form.name,
-      email: form.email,
-      materialId: form.materialId || undefined,
-      color: form.color || undefined,
-      quantity: Number(form.quantity) || 1,
-      notes: form.notes || undefined,
-    })
-    setSending(false)
-    alert(`Teşekkürler! Talebin alındı (No: ${request.id}). En kısa sürede dönüş yapacağız.`)
-    setForm(emptyForm)
+    try {
+      await submitRequest({
+        name: form.name,
+        email: form.email,
+        materialId: form.materialId || undefined,
+        color: form.color || undefined,
+        quantity: Number(form.quantity) || 1,
+        notes: form.notes || undefined,
+      })
+      alert('Teşekkürler! Talebin alındı. En kısa sürede dönüş yapacağız.')
+      setForm(emptyForm)
+    } catch (err) {
+      alert(err.message || 'Talep gönderilemedi, lütfen tekrar deneyin.')
+      console.error('[Contact] submit hatası:', err)
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -100,7 +106,7 @@ export default function Contact() {
             </div>
             <div className="field">
               <label>Notlar / Dosya bilgisi</label>
-              <textarea rows="3" placeholder="Parça ölçüleri, STL bağlantısı, özel istekler..."
+              <textarea rows="3" required placeholder="Parça ölçüleri, STL bağlantısı, özel istekler..."
                 value={form.notes} onChange={e => update('notes', e.target.value)}></textarea>
             </div>
             <button type="submit" className="btn btn-primary" disabled={sending}>

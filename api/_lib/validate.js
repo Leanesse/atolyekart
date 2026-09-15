@@ -22,6 +22,23 @@ export function validateOrder(body) {
   return { valid: Object.keys(errors).length === 0, errors, data }
 }
 
+export function validateCustomPrint(body) {
+  const data = {
+    name: clean(body?.name),
+    email: email(body?.email),
+    materialId: clean(body?.materialId),
+    color: clean(body?.color),
+    quantity: Number(body?.quantity),
+    notes: clean(body?.notes),
+  }
+  const errors = {}
+  if (!data.name) errors.name = 'Ad gerekli.'
+  if (!EMAIL_RE.test(data.email)) errors.email = 'Geçerli e-posta gerekli.'
+  if (!data.notes) errors.notes = 'Ne istediğini kısaca yaz (not alanı).'
+  if (!Number.isInteger(data.quantity) || data.quantity < 1) errors.quantity = 'Adet en az 1.'
+  return { valid: Object.keys(errors).length === 0, errors, data }
+}
+
 export function validateStockNotify(body) {
   const data = {
     name: clean(body?.name),

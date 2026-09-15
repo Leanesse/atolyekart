@@ -228,3 +228,14 @@ footer .muted{color:var(--muted);font-size:.86rem}
 .admin-orders li { padding: 8px 0; border-bottom: 1px solid #eee; }
 
 .stock-toggle { display: inline-flex; gap: 6px; align-items: center; font-size: .85rem; color: #444; margin: 8px 0 16px; }
+
+/* Admin panel sekmeleri + AI öneri kutusu */
+.admin-tabs { display: flex; gap: 8px; margin: 16px 0 20px; flex-wrap: wrap; }
+.admin-tab { cursor: pointer; padding: 6px 14px; border-radius: 20px; border: 1px solid #ddd; background: #fff; font-size: .85rem; }
+.admin-tab.active { background: #111; color: #fff; border-color: #111; }
+.admin-quote { display: flex; flex-direction: column; gap: 2px; }
+.admin-quote .q-meta { font-size: .85rem; }
+.admin-quote .q-msg { font-size: .85rem; color: #555; }
+.ai-suggest-box { margin-top: 14px; padding: 14px 16px; border: 1px solid #e0e0e0; border-radius: 8px; background: #f7f7f5; font-size: .9rem; white-space: pre-line; text-align: left; }
+.ai-suggest-box .ai-kicker { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: #777; margin-bottom: 6px; }
+.ai-suggest-box p { margin: 0; }

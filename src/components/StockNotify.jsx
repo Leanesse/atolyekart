@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getProducts } from '../services/productService.js'
-import { submitStockNotify } from '../services/stockNotifyService.js'
+import { submitStockNotify, fetchAiSuggestion } from '../services/stockNotifyService.js'
 
 const emptyForm = { name: '', email: '', productId: '' }
 
@@ -10,6 +10,9 @@ export default function StockNotify() {
   const [form, setForm] = useState(emptyForm)
   const [sending, setSending] = useState(false)
   const [done, setDone] = useState(false)
+  const [suggestion, setSuggestion] = useState(null)
+  const [suggestSource, setSuggestSource] = useState(null)
+  const [suggestLoading, setSuggestLoading] = useState(false)
 
   useEffect(() => {
     let alive = true
@@ -31,6 +34,8 @@ export default function StockNotify() {
 
   async function handleSubmit(e) {
     e.preventDefault()
+    const secili = selectedProduct
+    const gonderenEmail = form.email
     setSending(true)
     try {
       await submitStockNotify({
@@ -41,6 +46,16 @@ export default function StockNotify() {
       })
       setDone(true)
       setForm(emptyForm)
+      // Tükenen ürün için AI Agent'tan alternatif öneri isteyip kutuda göster.
+      if (secili && !secili.inStock) {
+        setSuggestion(null)
+        setSuggestSource(null)
+        setSuggestLoading(true)
+        fetchAiSuggestion({ productId: secili.id, productName: secili.name, email: gonderenEmail, name: secili.name ?? undefined })
+          .then(r => { setSuggestion(r.oneri); setSuggestSource(r.kaynak) })
+          .catch(err => { console.error('[StockNotify] AI öneri hatası:', err); setSuggestion(null) })
+          .finally(() => setSuggestLoading(false))
+      }
     } catch (err) {
       alert('Bildirim kaydedilemedi, lütfen tekrar deneyin.')
       console.error('[StockNotify] submit hatası:', err)
@@ -65,7 +80,21 @@ export default function StockNotify() {
               <p className="form-note">
                 Seçtiğin ürün stoğa girdiğinde e-posta ile haber vereceğiz.
               </p>
-              <button type="button" className="btn btn-primary" onClick={() => setDone(false)}>
+              {suggestLoading && (
+                <div className="ai-suggest-box">
+                  <div className="ai-kicker">AI Agent</div>
+                  <p>AI alternatif önerileri hazırlıyor…</p>
+                </div>
+              )}
+              {suggestion && (
+                <div className="ai-suggest-box">
+                  <div className="ai-kicker">
+                    {suggestSource === 'ai' ? 'AI Agent Önerisi' : 'Stoktaki Alternatifler'}
+                  </div>
+                  <p>{suggestion}</p>
+                </div>
+              )}
+              <button type="button" className="btn btn-primary" onClick={() => { setDone(false); setSuggestion(null) }}>
                 Yeni Bildirim
               </button>
             </>
