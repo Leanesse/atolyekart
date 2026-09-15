@@ -37,6 +37,20 @@ describe('validateCustomPrint', () => {
   it('geçerli talebi onaylar', () => {
     expect(validateCustomPrint({ name: 'Ali', email: 'ali@site.com', quantity: 2, notes: 'STL hazır', consent: true }).valid).toBe(true)
   })
+  it('renkleri çoktan seçmeli toplar ve color özetini üretir', () => {
+    const r = validateCustomPrint({ name: 'Ali', email: 'ali@site.com', quantity: 1, notes: 'x', consent: true, colors: ['Siyah', '  Mor ', '', 42] })
+    expect(r.data.colors).toEqual(['Siyah', 'Mor'])
+    expect(r.data.color).toBe('Siyah, Mor')
+  })
+  it('renk verilmemişse color boş kalır', () => {
+    const r = validateCustomPrint({ name: 'Ali', email: 'ali@site.com', quantity: 1, notes: 'x', consent: true })
+    expect(r.data.colors).toEqual([])
+    expect(r.data.color).toBe('')
+  })
+  it('en fazla 8 renk alır', () => {
+    const r = validateCustomPrint({ name: 'Ali', email: 'ali@site.com', quantity: 1, notes: 'x', consent: true, colors: ['1','2','3','4','5','6','7','8','9','10'] })
+    expect(r.data.colors.length).toBe(8)
+  })
   it('not alanı boşsa reddeder', () => {
     expect(validateCustomPrint({ name: 'Ali', email: 'ali@site.com', quantity: 1, notes: '', consent: true }).valid).toBe(false)
   })

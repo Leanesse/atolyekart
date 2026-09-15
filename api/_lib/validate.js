@@ -9,6 +9,7 @@ export function validateOrder(body) {
     productName: clean(body?.productName),
     phone: clean(body?.phone),
     email: email(body?.email),
+    color: clean(body?.color),
     quantity: Number(body?.quantity),
     consent: body?.consent === true,
   }
@@ -23,11 +24,17 @@ export function validateOrder(body) {
 }
 
 export function validateCustomPrint(body) {
+  // Renkler çoktan seçmeli: colors[] yapısını temizle, tekil color alanını
+  // (eski n8n akışı uyumlu) virgüllü özet olarak türet.
+  const colors = Array.isArray(body?.colors)
+    ? body.colors.filter((c) => typeof c === 'string').map((c) => clean(c)).filter(Boolean).slice(0, 8)
+    : []
   const data = {
     name: clean(body?.name),
     email: email(body?.email),
     materialId: clean(body?.materialId),
-    color: clean(body?.color),
+    color: clean(body?.color) || colors.join(', '),
+    colors,
     quantity: Number(body?.quantity),
     notes: clean(body?.notes),
     consent: body?.consent === true,

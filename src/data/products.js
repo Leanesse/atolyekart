@@ -69,8 +69,9 @@ export const products = [
     tags: [],
     description: '19mm mikro FPV kameralar için ayarlı mount.',
     specs: { weight: '5 g', dimensions: '19 mm', compatibility: '19x19 mikro FPV kamera' },
+    // Tükenmiş ürün örneği (3'ten 1'i): tüm varyantların stoğu 0 → "Stokta yok" rozeti
     variants: [
-      { id: 'micro-cam-mount-blk-tpu', sku: 'MT-MCM-BLK-TPU', materialId: 'tpu', color: 'Siyah', colorHex: '#1a1a1c', price: 59, currency: 'TRY', stock: 27 },
+      { id: 'micro-cam-mount-blk-tpu', sku: 'MT-MCM-BLK-TPU', materialId: 'tpu', color: 'Siyah', colorHex: '#1a1a1c', price: 59, currency: 'TRY', stock: 0 },
     ],
   },
   {
@@ -83,9 +84,10 @@ export const products = [
     tags: ['Whoop'],
     description: '65mm whoop için renkli kanopi kabuğu.',
     specs: { weight: '4 g', dimensions: '65 mm', compatibility: '65mm tinywhoop · 0802 motor' },
+    // Tükenmiş ürün örneği (3'ten 2'si): tüm varyantların stoğu 0
     variants: [
-      { id: 'tinywhoop-canopy-blu-petg', sku: 'FR-TWC-BLU-PETG', materialId: 'petg', color: 'Mavi', colorHex: '#2f6fd2', price: 99, currency: 'TRY', stock: 14 },
-      { id: 'tinywhoop-canopy-red-petg', sku: 'FR-TWC-RED-PETG', materialId: 'petg', color: 'Kırmızı', colorHex: '#d23a3a', price: 99, currency: 'TRY', stock: 9 },
+      { id: 'tinywhoop-canopy-blu-petg', sku: 'FR-TWC-BLU-PETG', materialId: 'petg', color: 'Mavi', colorHex: '#2f6fd2', price: 99, currency: 'TRY', stock: 0 },
+      { id: 'tinywhoop-canopy-red-petg', sku: 'FR-TWC-RED-PETG', materialId: 'petg', color: 'Kırmızı', colorHex: '#d23a3a', price: 99, currency: 'TRY', stock: 0 },
     ],
   },
   {
@@ -154,7 +156,7 @@ export const products = [
     tags: [],
     description: 'Video vericiyi aşırı ısınmadan koruyan kafes.',
     specs: { weight: '5 g', dimensions: '30x30 mm', compatibility: '30.5x30.5 & 20x20 VTX' },
-    // Tükenmiş ürün örneği: tüm varyantların stoğu 0 → "Stokta yok" rozeti test edilir
+    // Tükenmiş ürün örneği (3'ten 3'ü): tüm varyantların stoğu 0
     variants: [
       { id: 'vtx-isi-koruyucu-gri-abs', sku: 'KR-VTX-GRI-ABS', materialId: 'abs', color: 'Gri', colorHex: '#8a8a90', price: 55, currency: 'TRY', stock: 0 },
     ],

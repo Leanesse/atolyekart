@@ -12,7 +12,7 @@ const info = [
   { icon: '📍', label: 'Adres',     value: site.address.display,   href: site.address.href,   external: true },
 ]
 
-const emptyForm = { name: '', email: '', materialId: '', color: '', quantity: 1, notes: '', consent: false }
+const emptyForm = { name: '', email: '', materialId: '', colors: [], quantity: 1, notes: '', consent: false }
 
 export default function Contact() {
   const [materials, setMaterials] = useState([])
@@ -33,6 +33,19 @@ export default function Contact() {
     setForm(f => ({ ...f, [field]: value }))
   }
 
+  // Malzeme değişince seçili renkler artık geçersiz — temizle.
+  function pickMaterial(id) {
+    setForm(f => ({ ...f, materialId: id, colors: [] }))
+  }
+
+  // Çoktan seçmeli renk çipi: seçiliyse listeden çıkar, değilse ekle.
+  function toggleColor(name) {
+    setForm(f => ({
+      ...f,
+      colors: f.colors.includes(name) ? f.colors.filter(c => c !== name) : [...f.colors, name],
+    }))
+  }
+
   async function handleSubmit(e) {
     e.preventDefault()
     if (form.consent !== true) {
@@ -46,7 +59,7 @@ export default function Contact() {
         name: form.name,
         email: form.email,
         materialId: form.materialId || undefined,
-        color: form.color || undefined,
+        colors: form.colors.length ? form.colors : undefined,
         quantity: Number(form.quantity) || 1,
         notes: form.notes || undefined,
         consent: form.consent,
@@ -94,20 +107,12 @@ export default function Contact() {
               <input type="email" required placeholder="ornek@mail.com"
                 value={form.email} onChange={e => update('email', e.target.value)} />
             </div>
-            <div className="field-row">
+            <div className="field-row field-row-2">
               <div className="field">
                 <label>Malzeme</label>
-                <select value={form.materialId} onChange={e => update('materialId', e.target.value)}>
+                <select value={form.materialId} onChange={e => pickMaterial(e.target.value)}>
                   <option value="">Seçiniz</option>
                   {materials.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}
-                </select>
-              </div>
-              <div className="field">
-                <label>Renk</label>
-                <select value={form.color} onChange={e => update('color', e.target.value)}
-                  disabled={!selectedMaterial}>
-                  <option value="">{selectedMaterial ? 'Seçiniz' : 'Önce malzeme'}</option>
-                  {selectedMaterial?.colors.map(c => <option key={c.name} value={c.name}>{c.name}</option>)}
                 </select>
               </div>
               <div className="field field-qty">
@@ -115,6 +120,27 @@ export default function Contact() {
                 <input type="number" min="1" value={form.quantity}
                   onChange={e => update('quantity', e.target.value)} />
               </div>
+            </div>
+            <div className="field">
+              <label>Renk(ler) — çoktan seçmeli</label>
+              {selectedMaterial ? (
+                <div className="chip-row" role="group" aria-label="Renk seçimi">
+                  {selectedMaterial.colors.map(c => (
+                    <button type="button" key={c.name}
+                      className={`chip${form.colors.includes(c.name) ? ' active' : ''}`}
+                      onClick={() => toggleColor(c.name)}
+                      aria-pressed={form.colors.includes(c.name)}>
+                      <i style={{ background: c.hex }} aria-hidden="true" />
+                      {c.name}
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <p className="field-hint">Renkleri görmek için önce malzeme seç.</p>
+              )}
+              {form.colors.length > 0 && (
+                <p className="field-hint">Seçili: {form.colors.join(', ')}</p>
+              )}
             </div>
             <div className="field">
               <label>Notlar / Dosya bilgisi</label>
