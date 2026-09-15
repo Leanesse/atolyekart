@@ -20,15 +20,26 @@ const mountChat = () => {
   document.body.appendChild(target)
   createChat({
     target,
-    props: {
-      webhookUrl: 'https://atolyekart-n8n.tail204537.ts.net/webhook/333f83a4-8a34-4e02-9a55-70c46e2ac001/chat',
-      mode: 'window',
-      locale: 'tr',
-      chatInputKey: 'chatInput',
-      webSocketUrl: '',
-      initialMessages: [
-        'Merhaba! Ben AtölyeKart asistanı. 🛠️\nParçalar, stok durumu, kargo/iade veya özel baskı teklifi için sorabilirsin.',
-      ],
+    webhookUrl: 'https://atolyekart-n8n.tail204537.ts.net/webhook/333f83a4-8a34-4e02-9a55-70c46e2ac001/chat',
+    mode: 'window',
+    showWindowCloseButton: true,
+    defaultLanguage: 'tr',
+    showWelcomeScreen: false,
+    loadPreviousSession: true,
+    initialMessages: [
+      'Merhaba! 👋 Ben AtölyeKart asistanı.\nÜrünler, stok durumu, kargo/iade veya özel baskı teklifi için sorabilirsin.',
+    ],
+    i18n: {
+      tr: {
+        title: 'AtölyeKart Asistanı',
+        subtitle: 'Stok, kargo, iade ve özel baskı soruların için buradayım.',
+        getStarted: 'Yeni Sohbet',
+        inputPlaceholder: 'Sorunu yaz…',
+        closeButtonTooltip: 'Sohbeti kapat',
+        repostButton: 'Mesajı tekrar gönder',
+        reuseButton: 'Mesajı yeniden kullan',
+        footer: '',
+      },
     },
   })
 }

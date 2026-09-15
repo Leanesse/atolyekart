@@ -386,3 +386,47 @@ a.contact-item:hover{border-color:var(--accent-line);transform:translateY(-2px);
   .variant-color{flex:1}
   .variant-material{flex:1;font-size:.78rem;color:var(--muted)}
 }
+
+/* ---------- SOHBET ASİSTANI (n8n chat) — site teması ---------- */
+#atolyekart-chat{color-scheme:light}
+#atolyekart-chat{
+  --chat--header--background:#14171b;
+  --chat--header--color:#f3f5f7;
+  --chat--body--background:#0d0f12;
+  --chat--footer--background:#0d0f12;
+  --chat--footer--color:#8b93a0;
+  --chat--footer--border-top:1px solid rgba(255,255,255,.08);
+  --chat--window--border:1px solid rgba(255,255,255,.16);
+  --chat--message--bot--background:#1c2027;
+  --chat--message--bot--color:#f3f5f7;
+  --chat--message--bot--border:none;
+  --chat--message--user--background:#2dd4bf;
+  --chat--message--user--color:#0d0f12;
+  --chat--message--pre--background:rgba(255,255,255,.06);
+  --chat--input--background:#15181d;
+  --chat--input--text-color:#f3f5f7;
+  --chat--input--container--background:#15181d;
+  --chat--input--container--border:1px solid rgba(255,255,255,.16);
+  --chat--input--send--button--background:transparent;
+  --chat--input--send--button--color:#2dd4bf;
+  --chat--input--send--button--background-hover:rgba(45,212,191,.12);
+  --chat--input--send--button--color-hover:#5eead4;
+  --chat--button--background--primary:#2dd4bf;
+  --chat--button--color--primary:#0d0f12;
+  --chat--button--background--primary--hover:#5eead4;
+  --chat--button--color--primary--hover:#0d0f12;
+  --chat--toggle--background:#2dd4bf;
+  --chat--toggle--color:#0d0f12;
+  --chat--toggle--hover--background:#5eead4;
+  --chat--toggle--active--background:#2dd4bf;
+  --chat--color--primary:#2dd4bf;
+  --chat--color--primary-shade-50:#25b9a2;
+  --chat--color--primary-shade-100:#1fa38f;
+  --chat--color--secondary:#2dd4bf;
+  --chat--color-secondary-shade-50:#25b9a2;
+  --chat--color-typing:#8b93a0;
+  --chat--window--border:1px solid rgba(255,255,255,.16);
+}
+#atolyekart-chat textarea::placeholder{color:#6b7280}
+#atolyekart-chat .chat-heading h1{font-size:1.15rem;letter-spacing:.3px}
+#atolyekart-chat .chat-heading p{color:#b8bec7;font-size:.85rem}
