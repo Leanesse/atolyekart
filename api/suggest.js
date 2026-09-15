@@ -27,6 +27,14 @@ export default async function handler(req, res) {
   if (status === 200 && body?.oneri) {
     return res.status(200).json({ kaynak: 'ai', oneri: String(body.oneri) })
   }
+  console.warn('[api/suggest] AI öneri alınamadı (status ' + status + '), bir kez daha deneniyor')
+  const ikinci = await n8nFetch('/webhook/stok-oneri', {
+    body: buildEvent('stock.suggest_requested', { productId, productName, email: mail, name }),
+    timeoutMs: 30000,
+  })
+  if (ikinci.status === 200 && ikinci.body?.oneri) {
+    return res.status(200).json({ kaynak: 'ai', oneri: String(ikinci.body.oneri) })
+  }
 
   console.warn('[api/suggest] AI öneri alınamadı (status ' + status + '), katalog yedeğine dönüldü')
   const catalog = getCatalog()
