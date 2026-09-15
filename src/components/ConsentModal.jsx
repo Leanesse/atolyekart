@@ -41,8 +41,10 @@ export default function ConsentModal({ open, onClose, onAccept }) {
       <div className="modal consent-modal" role="dialog" aria-modal="true"
         aria-label="KVKK Aydınlatma ve Açık Rıza Metni"
         onClick={e => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose} aria-label="Kapat">×</button>
-        <h3>KVKK Aydınlatma ve Açık Rıza Metni</h3>
+        <div className="modal-head">
+          <h3>KVKK Aydınlatma ve Açık Rıza Metni</h3>
+          <button className="modal-close" onClick={onClose} aria-label="Kapat">×</button>
+        </div>
 
         <div className="consent-scroll" ref={scrollRef} onScroll={checkBottom}>
           <p className="consent-lead">

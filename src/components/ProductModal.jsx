@@ -40,7 +40,10 @@ export default function ProductModal({ product, onClose, onOrder }) {
       <div className="modal product-modal" role="dialog" aria-modal="true"
         aria-label={`${product.name} detayları`}
         onClick={e => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose} aria-label="Kapat">×</button>
+        <div className="modal-head">
+          <span className="modal-kicker">Ürün Detayı</span>
+          <button className="modal-close" onClick={onClose} aria-label="Kapat">×</button>
+        </div>
 
         <ProductImage
           emoji={product.emoji}
