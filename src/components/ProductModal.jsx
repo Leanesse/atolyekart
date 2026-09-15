@@ -72,7 +72,7 @@ export default function ProductModal({ product, onClose, onOrder }) {
           </dl>
         )}
 
-        <h4 className="variant-head">Varyantlar · {formatPrice(product.priceFrom, product.currency)} başlangıç fiyatı</h4>
+        <h4 className="variant-head">Varyantlar · {formatPrice(product.priceFrom, product.currency)}</h4>
         <div className="variant-table">
           {product.variants.map(v => (
             <div className="variant-row" key={v.id}>

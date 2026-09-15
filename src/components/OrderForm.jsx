@@ -5,7 +5,7 @@ import { validateOrderForm } from '../utils/validation.js'
 import ConsentCheck from './ConsentCheck.jsx'
 import ConsentModal from './ConsentModal.jsx'
 
-const emptyForm = { name: '', productId: '', phone: '', email: '', quantity: 1, consent: false }
+const emptyForm = { name: '', productId: '', color: '', phone: '', email: '', quantity: 1, consent: false }
 
 // Sipariş bölümü — form → onay ekranı → başarı (3 adımlı akış).
 export default function OrderForm({ preselect }) {
@@ -27,15 +27,26 @@ export default function OrderForm({ preselect }) {
   // Ürün detay modalından gelinen ürünü önceden seç.
   useEffect(() => {
     if (!preselect?.productId) return
-    setForm(f => ({ ...f, productId: preselect.productId }))
+    setForm(f => ({ ...f, productId: preselect.productId, color: '' }))
     setStep('form')
     setErrors({})
   }, [preselect])
 
   const selectedProduct = products.find(p => p.id === form.productId)
+  // Seçili ürünün varyantlarındaki benzersiz renkler.
+  const productColors = [...new Set((selectedProduct?.variants ?? []).map(v => v.color))]
 
   function update(field, value) {
-    setForm(f => ({ ...f, [field]: value }))
+    setForm(f => {
+      const next = { ...f, [field]: value }
+      // Ürün değişirse seçili renk yeni üründe olmayabilir — temizle.
+      if (field === 'productId') {
+        const yeni = products.find(p => p.id === value)
+        const renkler = [...new Set((yeni?.variants ?? []).map(v => v.color))]
+        if (f.color && !renkler.includes(f.color)) next.color = ''
+      }
+      return next
+    })
   }
 
   // Form → onay ekranına geç (client validasyon + consent kontrolü).
@@ -52,6 +63,7 @@ export default function OrderForm({ preselect }) {
     try {
       const result = await submitOrder({
         name: form.name, productId: form.productId, productName: selectedProduct?.name,
+        color: form.color || undefined,
         phone: form.phone, email: form.email, quantity: Number(form.quantity) || 1, consent: form.consent,
       })
       setOrderNo(result.id)
@@ -98,6 +110,14 @@ export default function OrderForm({ preselect }) {
                 </select>
               </div>
               <div className="field">
+                <label>Renk</label>
+                <select value={form.color} onChange={e => update('color', e.target.value)}
+                  disabled={!selectedProduct}>
+                  <option value="">{selectedProduct ? 'Seçiniz' : 'Önce ürün seç'}</option>
+                  {productColors.map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
+              </div>
+              <div className="field">
                 <label>E-posta</label>
                 <input type="email" required placeholder="ornek@mail.com"
                   value={form.email} onChange={e => update('email', e.target.value)} />
@@ -133,6 +153,7 @@ export default function OrderForm({ preselect }) {
               <dl className="summary">
                 <div><dt>Ad Soyad</dt><dd>{form.name}</dd></div>
                 <div><dt>Ürün</dt><dd>{selectedProduct?.name}</dd></div>
+                {form.color && <div><dt>Renk</dt><dd>{form.color}</dd></div>}
                 <div><dt>Telefon</dt><dd>{form.phone}</dd></div>
                 <div><dt>E-posta</dt><dd>{form.email}</dd></div>
                 <div><dt>Adet</dt><dd>{form.quantity}</dd></div>

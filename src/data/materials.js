@@ -9,6 +9,12 @@ export const materials = [
       { name: 'Siyah', hex: '#1a1a1c' },
       { name: 'Beyaz', hex: '#f2f2f4' },
       { name: 'Kırmızı', hex: '#d23a3a' },
+      { name: 'Mavi', hex: '#2f6fd2' },
+      { name: 'Mor', hex: '#7c3aed' },
+      { name: 'Yeşil', hex: '#22c55e' },
+      { name: 'Turkuaz', hex: '#2dd4bf' },
+      { name: 'Pembe', hex: '#ec4899' },
+      { name: 'Sarı', hex: '#eab308' },
     ],
   },
   {
@@ -19,6 +25,10 @@ export const materials = [
     colors: [
       { name: 'Siyah', hex: '#1a1a1c' },
       { name: 'Gri', hex: '#8a8a90' },
+      { name: 'Beyaz', hex: '#f2f2f4' },
+      { name: 'Mavi', hex: '#2f6fd2' },
+      { name: 'Mor', hex: '#7c3aed' },
+      { name: 'Sarı', hex: '#eab308' },
     ],
   },
   {
@@ -30,6 +40,11 @@ export const materials = [
       { name: 'Siyah', hex: '#1a1a1c' },
       { name: 'Mavi', hex: '#2f6fd2' },
       { name: 'Turuncu', hex: '#e07b2f' },
+      { name: 'Kırmızı', hex: '#d23a3a' },
+      { name: 'Yeşil', hex: '#22c55e' },
+      { name: 'Mor', hex: '#7c3aed' },
+      { name: 'Pembe', hex: '#ec4899' },
+      { name: 'Gri', hex: '#8a8a90' },
     ],
   },
 ]

@@ -22,9 +22,8 @@ export default function StockNotify() {
     let alive = true
     getProducts().then(data => {
       if (alive) {
-        // Tükenen ürünleri öne al — bildirim en çok onlar için anlamlı.
-        const sorted = [...data].sort((a, b) => Number(a.inStock) - Number(b.inStock))
-        setProducts(sorted)
+        // Sadece tükenen ürünler listelenir — stoğa gelince haber ver amaçlı.
+        setProducts(data.filter(p => !p.inStock))
       }
     })
     return () => { alive = false }
@@ -122,16 +121,16 @@ export default function StockNotify() {
                   value={form.email} onChange={e => update('email', e.target.value)} />
               </div>
               <div className="field">
-                <label>Ürün</label>
-                <select required value={form.productId}
-                  onChange={e => update('productId', e.target.value)}>
-                  <option value="">Seçiniz</option>
-                  {products.map(p => (
-                    <option key={p.id} value={p.id}>
-                      {p.name}{!p.inStock ? ' (Stokta yok)' : ''}
-                    </option>
-                  ))}
-                </select>
+                <label>Ürün (sadece tükenenler)</label>
+                {products.length === 0 ? (
+                  <p className="form-note">Şu anda tükenen ürün yok 🎉 Stoğa girmek için kataloğa göz at.</p>
+                ) : (
+                  <select required value={form.productId}
+                    onChange={e => update('productId', e.target.value)}>
+                    <option value="">Seçiniz</option>
+                    {products.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+                  </select>
+                )}
               </div>
               <ConsentCheck
                 checked={form.consent}
@@ -141,7 +140,7 @@ export default function StockNotify() {
                 Ad ve e-posta bilgilerimin, seçtiğim ürün stoğa girdiğinde
                 bilgilendirme amacıyla işlenmesine açık rıza veriyorum.
               </ConsentCheck>
-              <button type="submit" className="btn btn-primary" disabled={sending}>
+              <button type="submit" className="btn btn-primary" disabled={sending || products.length === 0}>
                 {sending ? 'Gönderiliyor…' : 'Bildir'}
               </button>
             </>

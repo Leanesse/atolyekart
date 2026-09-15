@@ -17,7 +17,7 @@ export default async function handler(req, res) {
   const { status, body } = await n8nFetch('/webhook/teklif-al', {
     body: buildEvent('custom_print.requested', {
       name: data.name, email: data.email,
-      materialId: data.materialId, color: data.color,
+      materialId: data.materialId, color: data.color, colors: data.colors,
       quantity: data.quantity, notes: data.notes,
       consent: data.consent,
     }),
