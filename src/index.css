@@ -261,6 +261,16 @@ footer .muted a:hover{color:var(--accent)}
 .consent { display: flex; gap: 8px; align-items: flex-start; font-size: .85rem; color: var(--ink-2); }
 .consent input { margin-top: 3px; accent-color: var(--accent); }
 
+/* Onay kutucuğu: .field input kuralının (genişlik/padding/arka plan) etkisinden çıkar */
+.field-consent .consent{
+  display:flex;gap:10px;align-items:flex-start;cursor:pointer;
+}
+.field-consent .consent input[type="checkbox"]{
+  width:18px;height:18px;padding:0;margin-top:3px;
+  background:transparent;border:0;border-radius:4px;
+  accent-color:var(--accent);cursor:pointer;flex-shrink:0;
+}
+
 /* ---------- LEGAL / ADMIN ---------- */
 .legal { max-width: 720px; }
 .legal h1 { margin-bottom: 16px; }
