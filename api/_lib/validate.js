@@ -30,12 +30,14 @@ export function validateCustomPrint(body) {
     color: clean(body?.color),
     quantity: Number(body?.quantity),
     notes: clean(body?.notes),
+    consent: body?.consent === true,
   }
   const errors = {}
   if (!data.name) errors.name = 'Ad gerekli.'
   if (!EMAIL_RE.test(data.email)) errors.email = 'Geçerli e-posta gerekli.'
   if (!data.notes) errors.notes = 'Ne istediğini kısaca yaz (not alanı).'
   if (!Number.isInteger(data.quantity) || data.quantity < 1) errors.quantity = 'Adet en az 1.'
+  if (!data.consent) errors.consent = 'Açık rıza gerekli (KVKK).'
   return { valid: Object.keys(errors).length === 0, errors, data }
 }
 
@@ -45,10 +47,12 @@ export function validateStockNotify(body) {
     email: email(body?.email),
     productId: clean(body?.productId),
     productName: clean(body?.productName),
+    consent: body?.consent === true,
   }
   const errors = {}
   if (!data.name) errors.name = 'Ad gerekli.'
   if (!EMAIL_RE.test(data.email)) errors.email = 'Geçerli e-posta gerekli.'
   if (!data.productId) errors.productId = 'Ürün gerekli.'
+  if (!data.consent) errors.consent = 'Açık rıza gerekli (KVKK).'
   return { valid: Object.keys(errors).length === 0, errors, data }
 }

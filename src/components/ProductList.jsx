@@ -5,7 +5,7 @@ import { getProducts } from '../services/productService.js'
 import ProductCard from './ProductCard.jsx'
 
 // Katalog bölümü — servisten veri çeker, filtreler ve grid'i çizer.
-export default function ProductList() {
+export default function ProductList({ onDetail }) {
   const [activeCat, setActiveCat] = useState('all')
   const [inStockOnly, setInStockOnly] = useState(false)
   const [items, setItems] = useState([])
@@ -57,7 +57,7 @@ export default function ProductList() {
           <p className="loading">Ürünler yükleniyor…</p>
         ) : (
           <div className="grid">
-            {visible.map(p => <ProductCard key={p.id} product={p} />)}
+            {visible.map(p => <ProductCard key={p.id} product={p} onDetail={onDetail} />)}
           </div>
         )}
 

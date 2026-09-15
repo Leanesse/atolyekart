@@ -23,21 +23,27 @@ describe('validateOrder', () => {
 
 describe('validateStockNotify', () => {
   it('geçerli bildirimi onaylar', () => {
-    expect(validateStockNotify({ name: 'Ali', email: 'ali@site.com', productId: 'p1', productName: 'X' }).valid).toBe(true)
+    expect(validateStockNotify({ name: 'Ali', email: 'ali@site.com', productId: 'p1', productName: 'X', consent: true }).valid).toBe(true)
   })
   it('geçersiz e-postayı reddeder', () => {
-    expect(validateStockNotify({ name: 'Ali', email: 'foo@bar', productId: 'p1' }).valid).toBe(false)
+    expect(validateStockNotify({ name: 'Ali', email: 'foo@bar', productId: 'p1', consent: true }).valid).toBe(false)
+  })
+  it('consent yoksa reddeder', () => {
+    expect(validateStockNotify({ name: 'Ali', email: 'ali@site.com', productId: 'p1', consent: false }).valid).toBe(false)
   })
 })
 
 describe('validateCustomPrint', () => {
   it('geçerli talebi onaylar', () => {
-    expect(validateCustomPrint({ name: 'Ali', email: 'ali@site.com', quantity: 2, notes: 'STL hazır' }).valid).toBe(true)
+    expect(validateCustomPrint({ name: 'Ali', email: 'ali@site.com', quantity: 2, notes: 'STL hazır', consent: true }).valid).toBe(true)
   })
   it('not alanı boşsa reddeder', () => {
-    expect(validateCustomPrint({ name: 'Ali', email: 'ali@site.com', quantity: 1, notes: '' }).valid).toBe(false)
+    expect(validateCustomPrint({ name: 'Ali', email: 'ali@site.com', quantity: 1, notes: '', consent: true }).valid).toBe(false)
   })
   it('geçersiz e-postayı reddeder', () => {
-    expect(validateCustomPrint({ name: 'Ali', email: 'foo@bar', quantity: 1, notes: 'x' }).valid).toBe(false)
+    expect(validateCustomPrint({ name: 'Ali', email: 'foo@bar', quantity: 1, notes: 'x', consent: true }).valid).toBe(false)
+  })
+  it('consent yoksa reddeder', () => {
+    expect(validateCustomPrint({ name: 'Ali', email: 'ali@site.com', quantity: 1, notes: 'x', consent: false }).valid).toBe(false)
   })
 })

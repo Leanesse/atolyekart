@@ -14,6 +14,7 @@ export default async function handler(req, res) {
   try {
     await sendToWebhook('stock.notify_requested', {
       name: data.name, productId: data.productId, productName: data.productName, email: data.email,
+      consent: data.consent,
     })
     return res.status(201).json({ ok: true })
   } catch (err) {

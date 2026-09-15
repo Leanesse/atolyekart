@@ -19,6 +19,7 @@ export default async function handler(req, res) {
       name: data.name, email: data.email,
       materialId: data.materialId, color: data.color,
       quantity: data.quantity, notes: data.notes,
+      consent: data.consent,
     }),
   })
 

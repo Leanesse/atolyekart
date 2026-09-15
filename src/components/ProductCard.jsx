@@ -2,7 +2,7 @@ import ProductImage from './ProductImage.jsx'
 import { formatPrice } from '../utils/format.js'
 
 // Tek bir ürün kartı — ProductView (türetilmiş alanlarla) alır.
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, onDetail }) {
   const {
     name, description, emoji, images, tags,
     priceFrom, currency, inStock, averageRating, reviewCount,
@@ -29,8 +29,8 @@ export default function ProductCard({ product }) {
         <p className="desc">{description}</p>
         <div className="card-foot">
           <span className="price">{formatPrice(priceFrom, currency)}</span>
-          <button className="card-btn" disabled={!inStock}>
-            {inStock ? 'Detay' : 'Tükendi'}
+          <button className="card-btn" onClick={() => onDetail?.(product)}>
+            Detay
           </button>
         </div>
       </div>

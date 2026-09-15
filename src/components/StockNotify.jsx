@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { getProducts } from '../services/productService.js'
 import { submitStockNotify, fetchAiSuggestion } from '../services/stockNotifyService.js'
+import ConsentCheck from './ConsentCheck.jsx'
+import ConsentModal from './ConsentModal.jsx'
 
-const emptyForm = { name: '', email: '', productId: '' }
+const emptyForm = { name: '', email: '', productId: '', consent: false }
 
 // Stok bildirimi bölümü — ürün stoğa girince haber vermek için bilgi toplar.
 export default function StockNotify() {
@@ -10,6 +12,8 @@ export default function StockNotify() {
   const [form, setForm] = useState(emptyForm)
   const [sending, setSending] = useState(false)
   const [done, setDone] = useState(false)
+  const [errors, setErrors] = useState({})
+  const [consentOpen, setConsentOpen] = useState(false)
   const [suggestion, setSuggestion] = useState(null)
   const [suggestSource, setSuggestSource] = useState(null)
   const [suggestLoading, setSuggestLoading] = useState(false)
@@ -34,6 +38,11 @@ export default function StockNotify() {
 
   async function handleSubmit(e) {
     e.preventDefault()
+    if (form.consent !== true) {
+      setErrors({ consent: 'Devam için açık rıza gerekli. Aydınlatma Metni\'ni okuyup onayla.' })
+      return
+    }
+    setErrors({})
     const secili = selectedProduct
     const gonderenEmail = form.email
     setSending(true)
@@ -43,6 +52,7 @@ export default function StockNotify() {
         email: form.email,
         productId: form.productId,
         productName: selectedProduct?.name,
+        consent: form.consent,
       })
       setDone(true)
       setForm(emptyForm)
@@ -123,12 +133,30 @@ export default function StockNotify() {
                   ))}
                 </select>
               </div>
+              <ConsentCheck
+                checked={form.consent}
+                error={errors.consent}
+                onOpen={() => setConsentOpen(true)}
+              >
+                Ad ve e-posta bilgilerimin, seçtiğim ürün stoğa girdiğinde
+                bilgilendirme amacıyla işlenmesine açık rıza veriyorum.
+              </ConsentCheck>
               <button type="submit" className="btn btn-primary" disabled={sending}>
                 {sending ? 'Gönderiliyor…' : 'Bildir'}
               </button>
             </>
           )}
         </form>
+
+        <ConsentModal
+          open={consentOpen}
+          onClose={() => setConsentOpen(false)}
+          onAccept={() => {
+            update('consent', true)
+            setErrors(e => ({ ...e, consent: undefined }))
+            setConsentOpen(false)
+          }}
+        />
       </div>
     </section>
   )

@@ -2,17 +2,20 @@ import { useEffect, useState } from 'react'
 import { getProducts } from '../services/productService.js'
 import { submitOrder } from '../services/orderService.js'
 import { validateOrderForm } from '../utils/validation.js'
+import ConsentCheck from './ConsentCheck.jsx'
+import ConsentModal from './ConsentModal.jsx'
 
 const emptyForm = { name: '', productId: '', phone: '', email: '', quantity: 1, consent: false }
 
 // Sipariş bölümü — form → onay ekranı → başarı (3 adımlı akış).
-export default function OrderForm() {
+export default function OrderForm({ preselect }) {
   const [products, setProducts] = useState([])
   const [form, setForm] = useState(emptyForm)
   const [step, setStep] = useState('form') // 'form' | 'confirm' | 'done'
   const [sending, setSending] = useState(false)
   const [orderNo, setOrderNo] = useState('')
   const [errors, setErrors] = useState({})
+  const [consentOpen, setConsentOpen] = useState(false)
 
   // Ürünleri servisten yükle (ileride webhook/API olsa da burası değişmez).
   useEffect(() => {
@@ -20,6 +23,14 @@ export default function OrderForm() {
     getProducts().then(data => { if (alive) setProducts(data) })
     return () => { alive = false }
   }, [])
+
+  // Ürün detay modalından gelinen ürünü önceden seç.
+  useEffect(() => {
+    if (!preselect?.productId) return
+    setForm(f => ({ ...f, productId: preselect.productId }))
+    setStep('form')
+    setErrors({})
+  }, [preselect])
 
   const selectedProduct = products.find(p => p.id === form.productId)
 
@@ -104,17 +115,14 @@ export default function OrderForm() {
                     value={form.quantity} onChange={e => update('quantity', e.target.value)} />
                 </div>
               </div>
-              <div className="field field-consent">
-                <label className="consent">
-                  <input type="checkbox" checked={form.consent}
-                    onChange={e => update('consent', e.target.checked)} />
-                  <span>
-                    Ad, telefon ve e-posta bilgilerimin siparişimle ilgili iletişim amacıyla
-                    işlenmesine açık rıza veriyorum. (<a href="#gizlilik">Gizlilik Politikası</a>)
-                  </span>
-                </label>
-                {errors.consent && <p className="field-error">{errors.consent}</p>}
-              </div>
+              <ConsentCheck
+                checked={form.consent}
+                error={errors.consent}
+                onOpen={() => setConsentOpen(true)}
+              >
+                Ad, telefon ve e-posta bilgilerimin siparişimle ilgili iletişim
+                amacıyla işlenmesine açık rıza veriyorum.
+              </ConsentCheck>
               <button type="submit" className="btn btn-primary">Devam</button>
             </>
           )}
@@ -154,6 +162,16 @@ export default function OrderForm() {
             </>
           )}
         </form>
+
+        <ConsentModal
+          open={consentOpen}
+          onClose={() => setConsentOpen(false)}
+          onAccept={() => {
+            update('consent', true)
+            setErrors(e => ({ ...e, consent: undefined }))
+            setConsentOpen(false)
+          }}
+        />
       </div>
     </section>
   )
